@@ -35,7 +35,12 @@ public class PurchasingController {
         }
     }
 
-    @GetMapping("/{user}")
+
+    @GetMapping
+    public List<Purchase> getAllPurchases() {
+        return purchasingService.getAllPurchases();
+    }
+    @PostMapping("/{user}")
     public List<Purchase> getPurchases(@RequestBody @Valid User user) {
         try {
             return purchasingService.getPurchasesByUser(user);
