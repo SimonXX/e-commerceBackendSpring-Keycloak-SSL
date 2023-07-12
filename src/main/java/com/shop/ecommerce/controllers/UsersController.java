@@ -36,4 +36,16 @@ public class UsersController {
         return accountingService.getAllUsers();
     }
 
+
+    @GetMapping("/search")
+    public ResponseEntity<User> getByEmail(@RequestParam String email) {
+        User user = accountingService.getUserByEmail(email);
+        if (user != null) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 }

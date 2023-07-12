@@ -30,4 +30,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User getUserByEmail(String email) {
+        // Implementa la logica per ottenere lo User dal repository o da altre fonti di dati
+        // utilizzando l'email come criterio di ricerca
+        return userRepository.findByEmail(email);
+    }
+
 }
