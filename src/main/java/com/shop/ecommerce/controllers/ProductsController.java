@@ -4,10 +4,12 @@ import com.shop.ecommerce.entities.Product;
 import com.shop.ecommerce.services.ProductService;
 import com.shop.ecommerce.support.ResponseMessage;
 import com.shop.ecommerce.support.exceptions.BarCodeAlreadyExistException;
+import com.shop.ecommerce.support.exceptions.ProductNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,5 +55,20 @@ public class ProductsController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+
+    @Transactional
+    @PostMapping("/edit/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable int id, @RequestBody Product request) {
+        try {
+            productService.updateProduct(id, request.getQuantity(),
+                                                request.getName(),
+                                                    request.getDescription(), request.getImage(), request.getPrice());
+            return ResponseEntity.ok("Product updated successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.");
+        } catch (ProductNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

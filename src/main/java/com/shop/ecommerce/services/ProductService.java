@@ -3,6 +3,7 @@ package com.shop.ecommerce.services;
 import com.shop.ecommerce.entities.Product;
 import com.shop.ecommerce.repositories.ProductRepository;
 import com.shop.ecommerce.support.exceptions.BarCodeAlreadyExistException;
+import com.shop.ecommerce.support.exceptions.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -21,6 +21,20 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+
+    public void updateProduct(int id, int quantity, String name, String description, String image, double price) throws ProductNotFoundException {
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException());
+
+        product.setQuantity(quantity);
+        product.setName(name);
+        product.setDescription(description);
+        product.setImage(image);
+        product.setPrice(price);
+
+        productRepository.save(product);
+    }
 
     @Transactional(readOnly = false)
     public void addProduct(Product product) throws BarCodeAlreadyExistException {
@@ -48,6 +62,11 @@ public class ProductService {
     }
 
 
+    @Transactional(readOnly = false)
+    public Product editProduct(Product p){
+
+        return productRepository.save(p);
+    }
 
 
     @Transactional(readOnly = true)
