@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class ProductService {
@@ -45,10 +47,14 @@ public class ProductService {
         }
     }
 
+
+
+
     @Transactional(readOnly = true)
     public List<Product> showProductsByName(String name) {
         return productRepository.findByNameContaining(name);
     }
+
 
     @Transactional(readOnly = true)
     public List<Product> showProductsByBarCode(String barCode) {
@@ -56,4 +62,9 @@ public class ProductService {
     }
 
 
+    public Product getProductById(Long productId) {
+
+        return productRepository.findById(productId);
+
+    }
 }

@@ -42,6 +42,8 @@ public class ProductsController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+
+
     @GetMapping("/search/by_name")
     public ResponseEntity getByName(@RequestParam(required = false) String name) {
         List<Product> result = productService.showProductsByName(name);
