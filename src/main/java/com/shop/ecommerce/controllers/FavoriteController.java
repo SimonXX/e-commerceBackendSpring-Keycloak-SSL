@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,18 +25,22 @@ public class FavoriteController {
     }
 
 
+
+    @PreAuthorize("hasRole('client_user')")
     @DeleteMapping("/favorite/{favoriteId}")
     public ResponseEntity<Void> deleteFavorite(@PathVariable Long favoriteId) {
         favoriteService.deleteFavorite(favoriteId);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('client_user')")
     @PostMapping
     public ResponseEntity<Favorite> addFavorite(@RequestBody @Valid Favorite request){
         Favorite addedFavorite = favoriteService.addFavorite(request);
         return new ResponseEntity<>(addedFavorite, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('client_user')")
     @PostMapping("/view/{favorite}")
     public ResponseEntity<List<Favorite>> getUserFavorites(@RequestBody @Valid User user){
         List<Favorite> userFavorites = favoriteService.getFavorites(user);

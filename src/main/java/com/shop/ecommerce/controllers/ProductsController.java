@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,8 @@ public class ProductsController {
     @Autowired
     private ProductService productService;
 
+
+    @PreAuthorize("hasRole('client_admin')")
     @PostMapping
     public ResponseEntity create(@RequestBody @Valid Product product) {
         try {
@@ -30,11 +33,14 @@ public class ProductsController {
         return new ResponseEntity<>(new ResponseMessage("Added successful!"), HttpStatus.OK);
     }
 
+
+    @PreAuthorize("hasRole('client_user') or hasRole('client_admin')")
     @GetMapping
     public List<Product> getAll() {
         return productService.showAllProducts();
     }
 
+    @PreAuthorize("hasRole('client_user') or hasRole('client_admin')")
     @GetMapping("/paged")
     public ResponseEntity getAll(@RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber, @RequestParam(value = "pageSize", defaultValue = "10") int pageSize, @RequestParam(value = "sortBy", defaultValue = "id") String sortBy) {
         List<Product> result = productService.showAllProducts(pageNumber, pageSize, sortBy);
@@ -45,7 +51,7 @@ public class ProductsController {
     }
 
 
-
+    @PreAuthorize("hasRole('client_user') or hasRole('client_admin')")
     @GetMapping("/search/by_name")
     public ResponseEntity getByName(@RequestParam(required = false) String name) {
         List<Product> result = productService.showProductsByName(name);
@@ -55,7 +61,7 @@ public class ProductsController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-
+    @PreAuthorize("hasRole('client_admin')")
     @Transactional
     @PostMapping("/edit/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable int id, @RequestBody Product request) {

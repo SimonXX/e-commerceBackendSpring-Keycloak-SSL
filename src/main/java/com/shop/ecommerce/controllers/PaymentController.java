@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -24,7 +25,7 @@ public class PaymentController {
     @Autowired
     private PaymentService purchasingService;
 
-
+    @PreAuthorize("hasRole('client_user')")
     @PostMapping
     @ResponseStatus(code = HttpStatus.OK)
     public ResponseEntity makePurchase(@RequestBody @Valid Purchase purchase) { // è buona prassi ritornare l'oggetto inserito
@@ -35,11 +36,15 @@ public class PaymentController {
         }
     }
 
-
+    @PreAuthorize("hasRole('client_admin')")
     @GetMapping
     public List<Purchase> getAllPurchases() {
         return purchasingService.getAllPurchases();
     }
+
+
+
+    @PreAuthorize("hasRole('client_user') or hasRole('client_admin')")
     @PostMapping("/{user}")
     public List<Purchase> getPurchases(@RequestBody @Valid User user) {
         try {
@@ -49,6 +54,7 @@ public class PaymentController {
         }
     }
 
+    @PreAuthorize("hasRole('client_user') or hasRole('client_admin')")
     @GetMapping("/{user}/{startDate}/{endDate}")
     public ResponseEntity getPurchasesInPeriod(@Valid @PathVariable("user") User user, @PathVariable("startDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date start, @PathVariable("endDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date end) {
         try {

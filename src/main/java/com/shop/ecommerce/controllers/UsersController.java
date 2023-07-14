@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public class UsersController {
     private UserService accountingService;
 
 
+
+    @PreAuthorize("hasRole('client_user') or hasRole('client_admin')")
     @PostMapping
     public ResponseEntity create(@RequestBody @Valid User user) {//il controller chiama il metodo del service
         try {
@@ -31,12 +34,15 @@ public class UsersController {
         }
     }
 
+
+    @PreAuthorize("hasRole('client_admin')")
     @GetMapping
     public List<User> getAll() {
         return accountingService.getAllUsers();
     }
 
 
+    @PreAuthorize("hasRole('client_user') or hasRole('client_admin')")
     @GetMapping("/search")
     public ResponseEntity<User> getByEmail(@RequestParam String email) {
         User user = accountingService.getUserByEmail(email);

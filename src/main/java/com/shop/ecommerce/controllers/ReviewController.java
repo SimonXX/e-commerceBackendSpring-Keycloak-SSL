@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,12 +25,15 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
+
+    @PreAuthorize("hasRole('client_user')")
     @PostMapping
     public ResponseEntity<Review> addReview(@RequestBody @Valid Review request) {
         Review addedReview = reviewService.addReview(request);
         return new ResponseEntity<>(addedReview, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('client_user') or hasRole('client_admin')")
     @PostMapping("/view/{product}")
     public ResponseEntity<List<Review>> getProductReviews(@RequestBody @Valid Product product) {
         List<Review> productReviews = reviewService.getReviews(product);
