@@ -66,8 +66,6 @@ public class ProductsController {
             return ResponseEntity.ok("Product updated successfully.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.");
-        } catch (ProductNotFoundException e) {
-            throw new RuntimeException(e);
         }
     }
 

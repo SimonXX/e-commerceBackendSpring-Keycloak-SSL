@@ -2,7 +2,7 @@ package com.shop.ecommerce.controllers;
 
 import com.shop.ecommerce.entities.Purchase;
 import com.shop.ecommerce.entities.User;
-import com.shop.ecommerce.services.PurchasingService;
+import com.shop.ecommerce.services.PaymentService;
 import com.shop.ecommerce.support.ResponseMessage;
 import com.shop.ecommerce.support.exceptions.DateWrongRangeException;
 import com.shop.ecommerce.support.exceptions.QuantityProductUnavailableException;
@@ -20,16 +20,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/purchases")
-public class PurchasingController {
+public class PaymentController {
     @Autowired
-    private PurchasingService purchasingService;
+    private PaymentService purchasingService;
 
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public ResponseEntity create(@RequestBody @Valid Purchase purchase) { // è buona prassi ritornare l'oggetto inserito
+    public ResponseEntity makePurchase(@RequestBody @Valid Purchase purchase) { // è buona prassi ritornare l'oggetto inserito
         try {
-            return new ResponseEntity<>(purchasingService.addPurchase(purchase), HttpStatus.OK);
+            return new ResponseEntity<>(purchasingService.makePurchase(purchase), HttpStatus.OK);
         } catch (QuantityProductUnavailableException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product quantity unavailable!", e); // realmente il messaggio dovrebbe essrere più esplicativo (es. specificare il prodotto di cui non vi è disponibilità)
         }

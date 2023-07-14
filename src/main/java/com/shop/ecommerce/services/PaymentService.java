@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class PurchasingService {
+public class PaymentService {
 
     @Autowired
     private PurchaseRepository purchaseRepository;
@@ -32,7 +32,7 @@ public class PurchasingService {
 
 
     @Transactional(readOnly = false)
-    public Purchase addPurchase(Purchase purchase) throws QuantityProductUnavailableException {
+    public Purchase makePurchase(Purchase purchase) throws QuantityProductUnavailableException {
         Purchase result = purchaseRepository.save(purchase);
         for ( ProductInPurchase pip : result.getProductsInPurchase() ) {
             pip.setPurchase(result);
