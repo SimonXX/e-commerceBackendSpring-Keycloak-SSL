@@ -25,7 +25,9 @@ public class PaymentController {
     @Autowired
     private PaymentService purchasingService;
 
-    @PreAuthorize("hasRole('client_user')")
+
+    @PreAuthorize("hasRole('client_user') ")
+
     @PostMapping
     @ResponseStatus(code = HttpStatus.OK)
     public ResponseEntity makePurchase(@RequestBody @Valid Purchase purchase) { // è buona prassi ritornare l'oggetto inserito
@@ -44,6 +46,7 @@ public class PaymentController {
 
 
 
+
     @PreAuthorize("hasRole('client_user') or hasRole('client_admin')")
     @PostMapping("/{user}")
     public List<Purchase> getPurchases(@RequestBody @Valid User user) {
@@ -53,6 +56,7 @@ public class PaymentController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found!", e);
         }
     }
+
 
     @PreAuthorize("hasRole('client_user') or hasRole('client_admin')")
     @GetMapping("/{user}/{startDate}/{endDate}")

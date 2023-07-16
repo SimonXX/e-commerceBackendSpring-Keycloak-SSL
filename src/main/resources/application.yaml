@@ -4,7 +4,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/Alibou
+          issuer-uri: http://localhost:8080/realms/SIMONE
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
 
   application:
@@ -20,10 +20,16 @@ spring:
 jwt:
   auth:
     converter:
-      resource-id: alibou-rest-api
+      resource-id: simone-rest-api
       principle-attribute: preferred_username
 
 server:
   port: 8081
+
+  ssl:
+    key-alias: spring-https
+    key-store: classpath:simon.p12
+    key-store-type: PKCS12
+    key-store-password: password
 
 
