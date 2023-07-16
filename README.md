@@ -1,6 +1,6 @@
 # E-commerce App
 
-Applicazione di e-commerce sviluppata utilizzando il framework Spring. L'applicazione sfrutta Keycloak per la gestione dell'autenticazione e della registrazione degli utenti e utilizza un certificato SSL PKCS12 per garantire la sicurezza delle comunicazioni.
+Il backend dell'app di e-commerce, è stato sviluppato utilizzando il framework Spring. L'applicazione sfrutta Keycloak per la gestione dell'autenticazione e della registrazione degli utenti e utilizza un certificato SSL PKCS12 per garantire la sicurezza delle comunicazioni.
 
 ## Descrizione
 
